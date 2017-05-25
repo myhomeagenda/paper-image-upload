@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>paper-box-image demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../paper-box-image.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+    paper-box-image {
+      --paper-box-image-color:blue;
+      --paper-box-image-text-color:white;
+      --paper-box-image-dropzone-color:blue;
+      --paper-box-image-dropzone-text-color:white;
+    }
+
+    </style>
+
+    <style>
+    </style>
+
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic paper-box-image demo</h3>
+      <demo-snippet>
+        <template>
+          <paper-box-image
+            box-icon="images/add_blue.svg"
+            box-text="Profilo"
+            box-text-modify= "Modifica"
+            new-image-save-text="Salva"
+            new-image-exit-text="Annulla"
+            mod-image-new-text="Carica immagine"
+            mod-image-change-text="Modifica"
+            dropzone-text="Trascina il file qui o Clicca per caricare"
+            min-width="100"
+            max-width="600"
+            min-height="150"
+            max-height="500"
+            error-only-one-file="Un solo file accettato"
+            error-browser-not-supported="Browser non supportato"
+            error-type-not-supported="Tipi supportati: png,jpeg,bmp."
+            error-width="La larghezza dell' immagine deve essere tra: "
+            error-height="L' altezza dell' immagine deve essere tra: "
+          >
+
+          </paper-box-image>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>

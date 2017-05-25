@@ -1,0 +1,129 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-card/paper-card.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
+<!--
+### paper-box
+`<paper-box>` is a material design box.
+    <paper-box ></paper-box>
+
+@demo demo/index.html
+-->
+
+
+<dom-module id="paper-box">
+  <template>
+    <custom-style>
+      <style is="custom-style" include="iron-flex iron-flex-alignment"></style>
+    </custom-style>
+    <style>
+      :host {
+        display: block;
+        --paper-toolbar-height: 70px;
+        --paper-toolbar-sm-height: 60px;
+        --paper-box-image:"";
+
+      };
+      paper-card{
+        cursor: pointer;
+        width: 150px;
+        box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.14), 0 0px 0px 0 rgba(0, 0, 0, 0.12), 0 0px 0px -1px rgba(0, 0, 0, 0.4) !important;
+      }
+
+      .add_margin {
+          margin: 5px;
+      }
+      .pa-content {
+        padding: 0px;
+        padding-top: 4px;
+      }
+      #imageBox{
+        background-size:cover;
+
+
+        background-repeat: no-repeat;
+        background-position: center;
+        background-color:white;
+      }
+      .pa-center {
+        margin-bottom: 0px;
+      }
+      #iconbox{
+        width:  60px;
+        height: 60px;
+        color: var(--paper-box-color);
+      }
+      .toolbox {
+        display:block;
+        padding: 11px;
+        text-align: center;
+        background-color: var(--paper-box-color, green);
+      }
+      .visible{
+        visibility:visible;
+      }
+      .hidden{
+        visibility:hidden;
+      }
+    </style>
+
+    <paper-card>
+
+      <div id="imageBox" class="card-content add_margin pa-content" >
+
+        <div class="horizontal  layout center-justified pa-center">
+          <iron-icon id="iconbox" class$="{{_iconclass}}"  src="{{src}}"></<iron-icon>
+        </div>
+
+
+      </div>
+      <div>
+        <div class="toolbox" >
+          <h4>{{text}}</h4>
+        </div>
+      </div>
+    </paper-card>
+
+  </template>
+</dom-module>
+<script>
+  Polymer({
+
+    is: 'paper-box',
+
+
+    properties: {
+      text:{
+        type: String,
+        value:"",
+        notify:true
+      },
+      src:{
+        type:String,
+        value:"",
+        notify:true
+      },
+      _iconclass:{
+        type:String,
+        value:"visible",
+        notify:true
+      }
+    },
+
+    showIcon:function(){
+      this._iconclass = "visible";
+    },
+    hideIcon:function(){
+      this._iconclass = "hidden";
+    },
+    changeBackground:function(image){
+      this.hideIcon();
+      this.$.imageBox.style.backgroundImage="url("+image+")";
+    },
+    clearBackgroundImage:function(image){
+      this.showIcon();
+      this.$.imageBox.style.backgroundImage="";
+    },
+
+  });
+</script>

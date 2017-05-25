@@ -1,0 +1,400 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-box/paper-box.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-dropzone-dialog/paper-dropzone-dialog.html">
+<link rel="import" href="../paper-cropper-dialog/paper-cropper-dialog.html">
+<link rel="import" href="../mha-paper-alert/mha-paper-alert.html">
+<link rel="import" href="../iron-image-metadata/iron-image-metadata.html">
+
+<!--
+### paper-box-file
+`<paper-box-file>` is a material design box.
+    <paper-box-file ></paper-box-file>
+
+@demo demo/index.html
+-->
+
+
+<dom-module id="paper-box-image">
+  <template>
+    <custom-style>
+    </custom-style>
+    <style>
+      :host {}
+
+      paper-box {
+        --paper-box-color: var(--paper-box-image-color);
+        --paper-box-text-color: var(--paper-box-image-text-color);
+      }
+      paper-dropzone-dialog{
+        --paper-dropzone-dialog-color: var(--paper-box-image-dropzone-color);
+        --paper-dropzone-dialog-text-color: var(--paper-box-image-dropzone-text-color);
+      }
+    </style>
+
+    <mha-paper-alert id="image_alert">
+    </mha-paper-alert>
+
+    <paper-dropzone-dialog
+       id="dropZone"
+       text="{{dropzoneText}}"
+       on-files-error="fileError"
+       on-file-selected="fileSelected"
+       on-browser-error="browserNotSupported"
+     >
+    </paper-dropzone-dialog>
+
+    <paper-cropper-dialog
+      id="newImage"
+      save-text="{{newImageSaveText}}"
+      exit-text="{{newImageExitText}}"
+      on-save="SaveNewImage"
+      on-back="ExitNewImage"
+      crop-src="{{cropImage}}"
+      crop-width="{{croppedImageWidth}}"
+      crop-height="{{croppedImageHeight}}"
+      >
+    </paper-cropper-dialog>
+
+    <paper-cropper-dialog
+      id="modImage"
+      save-text="{{modImageNewText}}"
+      exit-text="{{modImageChangeText}}"
+      on-save="LoadNewImage"
+      on-back="ChangeImage"
+      preview-only
+      preview-src="{{previewImage}}"
+    >
+    </paper-cropper-dialog>
+
+    <iron-image-metadata id="metadataImage" src="{{imageMD}}" width="{{imageW}}" height="{{imageH}}" on-load="imageMetadataLoad">
+    </iron-image-metadata>
+
+    <paper-box
+      id="paperBox"
+      text="{{paperText}}"
+      src="{{boxIcon}}"
+      on-click="paperClick">
+
+    </paper-box>
+
+  </template>
+  <script>
+    Polymer({
+
+      is: 'paper-box-image',
+
+
+      properties: {
+        /*_selected: {
+          type: Boolean,
+          value: false,
+          notify: true
+        },*/
+        boxIcon:{
+          type: String,
+          value:"",
+          notify:true
+        },
+        newImageSaveText:{
+          type: String,
+          value:"Save",
+          notify: true
+        },
+        newImageExitText:{
+          type: String,
+          value:"Cancel",
+          notify: true
+        },
+        modImageNewText:{
+          type: String,
+          value:"Load new image",
+          notify: true
+        },
+        modImageChangeText:{
+          type: String,
+          value:"Modify",
+          notify: true
+        },
+        dropzoneText:{
+          type: String,
+          value:"Drop files here or Click to upload",
+          notify: true
+        },
+        paperText: {
+          type: String,
+          notify: true
+        },
+        boxText: {
+          type: String,
+          notify: true,
+          observer: '_textChange'
+        },
+        boxTextModify: {
+          type: String,
+          notify: true,
+          observer: '_textModifyChange'
+        },
+        originalImageWidth: {
+          type: Number,
+          value: 0,
+          notify: true
+        },
+        originalImageHeight: {
+          type: Number,
+          value: 0,
+          notify: true
+        },
+        croppedImageWidth: {
+          type: Number,
+          value: 0,
+          notify: true
+        },
+        croppedImageHeight: {
+          type: Number,
+          value: 0,
+          notify: true
+        },
+        croppedImage: {
+          type: Object,
+          value: null,
+          notify: true
+        },
+        originalImage: {
+          type: Object,
+          value: null,
+          notify: true
+        },
+        selectedImage: {
+          type: Boolean,
+          value: false,
+          observer: "_changeSelected",
+          notify: true
+        },
+        minHeight:{
+          type: Number,
+          value: 0,
+          notify: true
+        },
+        maxHeight:{
+          type: Number,
+          value: 0,
+          notify: true
+        },
+        minWidth:{
+          type: Number,
+          value: 0,
+          notify: true
+        },
+        maxWidth:{
+          type: Number,
+          value: 0,
+          notify: true
+        },
+        errorOnlyOneFile:{
+          type: String,
+          notify: true,
+          value:"Only one file accepted"
+        },
+        errorBrowserNotSupported:{
+          type: String,
+          notify: true,
+          value:"Browser not supported"
+        },
+        errorTypeNotSupported:{
+          type: String,
+          notify: true,
+          value:"Supported type: png,jpeg,bmp."
+        },
+        errorWidth:{
+          type: String,
+          notify: true,
+          value:"The image width must be between: "
+        },
+        errorHeight:{
+          type: String,
+          notify: true,
+          value:"The image height must be between: "
+        }
+      },
+      observers: [
+        'updateText(boxText,boxTextModify,selectedImage)'
+      ],
+      _changeSelected:function(newValue,oldValue){
+        if (newValue == true){
+          this.paperText = this.boxTextModify;
+        }
+        if (newValue == false){
+          this.paperText = this.boxText;
+        }
+      },
+      error: function(text) {
+        var alert = this.$.image_alert;
+        alert.withText(text);
+        alert.withDuration(3000).open();
+      },
+      fileError: function() {
+        this.error(this.errorOnlyOneFile);
+      },
+      /**
+       *
+       * name: files[0].name,
+       * size: files[0].size,
+       * type: files[0].type,
+       * result: fr.result
+       */
+      browserNotSupported: function() {
+        this.error(this.errorBrowserNotSupported);
+      },
+      imageMetadataLoad: function(e,obj) {
+        var width = obj.width;
+        var height = obj.height;
+        if (
+          (this.minWidth != 0 && width < this.minWidth) ||
+          (this.maxWidth != 0 && width > this.maxWidth)
+        ) {
+          this.error(this.errorWidth + this.minWidth + " px / " + this.maxWidth + " px");
+          return;
+        }
+        if (
+          (this.minHeight != 0 && height < this.minHeight) ||
+          (this.maxHeight != 0 && height > this.maxHeight)
+        ) {
+          this.error(this.errorHeight + this.minHeight + " px / " + this.maxHeight + " px");
+          return;
+        }
+        this.tempSelectedImage = this.imageMD;
+        this.tempSelImgWidth  = width;
+        this.tempSelImgHeight = height;
+        this.cropImage = this.imageMD;
+        this.$.dropZone.close();
+        this.$.newImage.open();
+      },
+      fileSelected: function(e,obj) {
+        // check file.name, size, type, result
+        if (
+          this.checkType(obj.type) == false
+        ) {
+          this.error(this.errorTypeNotSupported);
+          return;
+        }
+        this.imageMD = obj.result;
+        // see @imageMetadataLoad
+        // check image metadata
+      },
+
+      checkType: function(ctype) {
+        types = this.getAllowedTypes();
+
+        for (type in types) {
+
+          if (ctype.localeCompare(types[type]) == 0) {
+
+            return true;
+          }
+
+        }
+
+        return false;
+      },
+      getAllowedTypes: function() {
+        return ["image/bmp", "image/jpeg", "image/png", "image/pjpeg"];
+      },
+      SaveNewImage: function(e,image) {
+        /**
+        * Finally save the original and the cropped image.
+        * ( No need to save size for cropped )
+        */
+        this.originalImage        = this.tempSelectedImage;
+        this.croppedImage         = image.data;
+        this.originalImageWidth   = this.tempSelImgWidth;
+        this.originalImageHeight  = this.tempSelImgHeight;
+        this.selectedImage        = true;
+        this.$.paperBox.changeBackground(this.croppedImage);
+      },
+      ExitNewImage: function() {
+
+        /**
+        No for modification reason.
+        this.tempSelectedImage = null;
+        this.tempSelImgWidth = null;
+        this.tempSelImgHeight = null;
+        */
+      },
+      LoadNewImage: function() {
+
+        this.$.dropZone.open();
+        this.$.modImage.close();
+      },
+      ChangeImage: function() {
+        this.cropImage = this.originalImage;
+        this.$.modImage.close();
+        this.$.newImage.open();
+      },
+
+      updateText: function(text, textModify, selectedImage) {
+
+        if (selectedImage == false) {
+          this.paperText = text;
+
+        } else {
+          this.paperText = textModify;
+
+        }
+
+      },
+      _textChange: function(newValue, oldValue) {
+        if (this.selectedImage == false) {
+          this.paperText = newValue;
+        }
+      },
+      _textModifyChange: function(newValue, oldValue) {
+        if (this.selectedImage == true) {
+          this.paperText = newValue;
+        }
+
+      },
+      _textChange: function(newValue, oldValue) {
+        if (this.selectedImage == false) {
+          this.paperText = newValue;
+        }
+
+      },
+
+      paperClick: function() {
+        if (this.selectedImage == false){
+          this.$.dropZone.open();
+        }else{
+          this.previewImage = this.croppedImage;
+          this.$.modImage.open();
+        }
+      },
+      attached: function() {
+        this.choiceUploadOrEdit();
+      },
+
+      choiceUploadOrEdit: function() {
+        if (this.selectedImage == true) {
+          // if image is avaiable.
+          $(this.$.paperBox).mouseenter(function() {
+            this.paperText = this.boxTextModify;
+          }).mouseleave(function() {
+            this.paperText = this.boxText;
+          });
+          // hide paperbox icon.
+          this.$.paperBox.hideIcon();
+
+        } else {
+
+          this.$.paperBox.showIcon();
+        }
+      }
+
+
+    });
+  </script>
+
+</dom-module>
