@@ -28,6 +28,8 @@
       paper-box {
         --paper-box-color: var(--paper-box-image-color);
         --paper-box-text-color: var(--paper-box-image-text-color);
+        --paper-box-width:170px;
+        --paper-box-width-mobile:150px;
       }
       paper-dropzone-dialog{
         --paper-dropzone-dialog-color: var(--paper-box-image-dropzone-color);
@@ -223,6 +225,7 @@
       observers: [
         'updateText(boxText,boxTextModify,selectedImage)'
       ],
+
       _changeSelected:function(newValue,oldValue){
         if (newValue == true){
           this.paperText = this.boxTextModify;
