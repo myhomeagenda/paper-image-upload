@@ -1,9 +1,4 @@
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../paper-box/paper-box.html">
-<link rel="import" href="../paper-dialog/paper-dialog.html">
-<link rel="import" href="../paper-button/paper-button.html">
-<link rel="import" href="../paper-toolbar/paper-toolbar.html">
-<link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../paper-dropzone-dialog/paper-dropzone-dialog.html">
 <link rel="import" href="../paper-cropper-dialog/paper-cropper-dialog.html">
 <link rel="import" href="../mha-paper-alert/mha-paper-alert.html">
@@ -25,7 +20,7 @@
     <style>
       :host {}
 
-  
+
       paper-dropzone-dialog{
         --paper-dropzone-dialog-color: var(--paper-image-upload-dropzone-color);
         --paper-dropzone-dialog-text-color: var(--paper-image-upload-dropzone-text-color);
@@ -70,13 +65,7 @@
     <iron-image-metadata id="metadataImage" src="{{imageMD}}" width="{{imageW}}" height="{{imageH}}" on-load="imageMetadataLoad">
     </iron-image-metadata>
 
-    <paper-box
-      id="paperBox"
-      text="{{paperText}}"
-      src="{{boxIcon}}"
-      on-click="paperClick">
 
-    </paper-box>
 
   </template>
   <script>
@@ -91,11 +80,12 @@
           value: false,
           notify: true
         },*/
-        boxIcon:{
-          type: String,
-          value:"",
-          notify:true
-        },
+        opened:{
+          type: Boolean,
+          value: false,
+          notify: true,
+          observer:"__onOpen"
+        }
         newImageSaveText:{
           type: String,
           value:"Save",
@@ -124,16 +114,6 @@
         paperText: {
           type: String,
           notify: true
-        },
-        boxText: {
-          type: String,
-          notify: true,
-          observer: '_textChange'
-        },
-        boxTextModify: {
-          type: String,
-          notify: true,
-          observer: '_textModifyChange'
         },
         originalImageWidth: {
           type: Number,
@@ -168,7 +148,6 @@
         selectedImage: {
           type: Boolean,
           value: false,
-          observer: "_changeSelected",
           notify: true
         },
         minHeight:{
@@ -217,23 +196,12 @@
           value:"The image height must be between: "
         }
       },
-      observers: [
-        'updateText(boxText,boxTextModify,selectedImage)'
-      ],
-
-      _changeSelected:function(newValue,oldValue){
-        if (newValue == true){
-          this.paperText = this.boxTextModify;
-        }
-        if (newValue == false){
-          this.paperText = this.boxText;
-        }
-      },
       error: function(text) {
         var alert = this.$.image_alert;
         alert.withText(text);
         alert.withDuration(3000).open();
       },
+
       fileError: function() {
         this.error(this.errorOnlyOneFile);
       },
@@ -311,7 +279,7 @@
         this.originalImageWidth   = this.tempSelImgWidth;
         this.originalImageHeight  = this.tempSelImgHeight;
         this.selectedImage        = true;
-        this.$.paperBox.changeBackground(this.croppedImage);
+        //this.$.paperBox.changeBackground(this.croppedImage);
       },
       ExitNewImage: function() {
 
@@ -332,64 +300,17 @@
         this.$.modImage.close();
         this.$.newImage.open();
       },
-
-      updateText: function(text, textModify, selectedImage) {
-
-        if (selectedImage == false) {
-          this.paperText = text;
-
-        } else {
-          this.paperText = textModify;
-
-        }
-
-      },
-      _textChange: function(newValue, oldValue) {
-        if (this.selectedImage == false) {
-          this.paperText = newValue;
+      _onOpen: function(newvalue,oldvalue) {
+        if (newvalue == true){
+          if (this.selectedImage == false){
+            this.$.dropZone.open();
+          }else{
+            this.previewImage = this.croppedImage;
+            this.$.modImage.open();
+          }
         }
       },
-      _textModifyChange: function(newValue, oldValue) {
-        if (this.selectedImage == true) {
-          this.paperText = newValue;
-        }
 
-      },
-      _textChange: function(newValue, oldValue) {
-        if (this.selectedImage == false) {
-          this.paperText = newValue;
-        }
-
-      },
-
-      paperClick: function() {
-        if (this.selectedImage == false){
-          this.$.dropZone.open();
-        }else{
-          this.previewImage = this.croppedImage;
-          this.$.modImage.open();
-        }
-      },
-      attached: function() {
-        this.choiceUploadOrEdit();
-      },
-
-      choiceUploadOrEdit: function() {
-        if (this.selectedImage == true) {
-          // if image is avaiable.
-          $(this.$.paperBox).mouseenter(function() {
-            this.paperText = this.boxTextModify;
-          }).mouseleave(function() {
-            this.paperText = this.boxText;
-          });
-          // hide paperbox icon.
-          this.$.paperBox.hideIcon();
-
-        } else {
-
-          this.$.paperBox.showIcon();
-        }
-      }
 
 
     });

@@ -8,12 +8,9 @@
   "main": "paper-image-upload.html",
   "dependencies": {
     "polymer": "Polymer/polymer",
-    "paper-card": "PolymerElements/paper-card",
     "iron-icon": "PolymerElements/iron-icon",
-    "paper-toolbar": "PolymerElements/paper-toolbar",
     "iron-flex-layout": "PolymerElements/iron-flex-layout",
     "paper-dropzone-dialog": "https://github.com/faan11/paper-dropzone-dialog.git",
-    "paper-box": "https://github.com/faan11/paper-box.git",
     "paper-cropper-dialog": "https://github.com/faan11/paper-cropper-dialog.git",
     "mha-paper-alert": "https://github.com/faan11/mha-paper-alert.git",
     "iron-image-metadata": "https://github.com/faan11/iron-image-metadata.git"
