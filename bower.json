@@ -1,11 +1,11 @@
 {
-  "name": "paper-box-image",
+  "name": "paper-image-upload",
   "version": "1.0.0",
   "description": "A Material Design box (Polymer 1.x)",
   "authors": [
     "Faan11"
   ],
-  "main": "paper-box-image.html",
+  "main": "paper-image-upload.html",
   "dependencies": {
     "polymer": "Polymer/polymer",
     "paper-card": "PolymerElements/paper-card",

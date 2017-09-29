@@ -18,22 +18,17 @@
 -->
 
 
-<dom-module id="paper-box-image">
+<dom-module id="paper-image-upload">
   <template>
     <custom-style>
     </custom-style>
     <style>
       :host {}
 
-      paper-box {
-        --paper-box-color: var(--paper-box-image-color);
-        --paper-box-text-color: var(--paper-box-image-text-color);
-        --paper-box-width:170px;
-        --paper-box-width-mobile:150px;
-      }
+  
       paper-dropzone-dialog{
-        --paper-dropzone-dialog-color: var(--paper-box-image-dropzone-color);
-        --paper-dropzone-dialog-text-color: var(--paper-box-image-dropzone-text-color);
+        --paper-dropzone-dialog-color: var(--paper-image-upload-dropzone-color);
+        --paper-dropzone-dialog-text-color: var(--paper-image-upload-dropzone-text-color);
       }
     </style>
 
@@ -87,7 +82,7 @@
   <script>
     Polymer({
 
-      is: 'paper-box-image',
+      is: 'paper-image-upload',
 
 
       properties: {

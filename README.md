@@ -1,14 +1,14 @@
 
-# paper-box-image
+# paper-image-upload
 
-Material design: paper-box-image
+Material design: paper-image-upload
 
-`<paper-box-image>` is a material design box that select an image, to filter it and to crop it.
+`<paper-image-upload>` is a material design box that select an image, to filter it and to crop it.
 
 # Example:
 
 ```html
-<paper-box-image
+<paper-image-upload
             box-icon="images/add_blue.svg"
             box-text="Profile"
             box-text-modify= "Change"
