@@ -20,8 +20,7 @@
     <style>
       :host {}
 
-
-      paper-dropzone-dialog{
+      paper-dropzone-dialog {
         --paper-dropzone-dialog-color: var(--paper-image-upload-dropzone-color);
         --paper-dropzone-dialog-text-color: var(--paper-image-upload-dropzone-text-color);
       }
@@ -30,36 +29,13 @@
     <mha-paper-alert id="image_alert">
     </mha-paper-alert>
 
-    <paper-dropzone-dialog
-       id="dropZone"
-       text="{{dropzoneText}}"
-       on-files-error="fileError"
-       on-file-selected="fileSelected"
-       on-browser-error="browserNotSupported"
-     >
+    <paper-dropzone-dialog id="dropZone" text="{{dropzoneText}}" on-files-error="fileError" on-file-selected="fileSelected" on-browser-error="browserNotSupported">
     </paper-dropzone-dialog>
 
-    <paper-cropper-dialog
-      id="newImage"
-      save-text="{{newImageSaveText}}"
-      exit-text="{{newImageExitText}}"
-      on-save="SaveNewImage"
-      on-back="ExitNewImage"
-      crop-src="{{cropImage}}"
-      crop-width="{{croppedImageWidth}}"
-      crop-height="{{croppedImageHeight}}"
-      >
+    <paper-cropper-dialog id="newImage" save-text="{{newImageSaveText}}" exit-text="{{newImageExitText}}" on-save="SaveNewImage" on-back="ExitNewImage" crop-src="{{cropImage}}" crop-width="{{croppedImageWidth}}" crop-height="{{croppedImageHeight}}">
     </paper-cropper-dialog>
 
-    <paper-cropper-dialog
-      id="modImage"
-      save-text="{{modImageChangeText}}"
-      exit-text="{{modImageNewText}}"
-      on-save="ChangeImage"
-      on-back="LoadNewImage"
-      preview-only
-      preview-src="{{previewImage}}"
-    >
+    <paper-cropper-dialog id="modImage" save-text="{{modImageChangeText}}" exit-text="{{modImageNewText}}" on-save="ChangeImage" on-back="LoadNewImage" preview-only preview-src="{{previewImage}}">
     </paper-cropper-dialog>
 
     <iron-image-metadata id="metadataImage" src="{{imageMD}}" width="{{imageW}}" height="{{imageH}}" on-load="imageMetadataLoad">
@@ -80,35 +56,29 @@
           value: false,
           notify: true
         },*/
-        opened:{
-          type: Boolean,
-          value: false,
-          notify: true,
-          observer:"_onOpen"
-        },
-        newImageSaveText:{
+        newImageSaveText: {
           type: String,
-          value:"Save",
+          value: "Save",
           notify: true
         },
-        newImageExitText:{
+        newImageExitText: {
           type: String,
-          value:"Cancel",
+          value: "Cancel",
           notify: true
         },
-        modImageNewText:{
+        modImageNewText: {
           type: String,
-          value:"Load new image",
+          value: "Load new image",
           notify: true
         },
-        modImageChangeText:{
+        modImageChangeText: {
           type: String,
-          value:"Modify",
+          value: "Modify",
           notify: true
         },
-        dropzoneText:{
+        dropzoneText: {
           type: String,
-          value:"Drop files here or Click to upload",
+          value: "Drop files here or Click to upload",
           notify: true
         },
         paperText: {
@@ -150,50 +120,50 @@
           value: false,
           notify: true
         },
-        minHeight:{
+        minHeight: {
           type: Number,
           value: 0,
           notify: true
         },
-        maxHeight:{
+        maxHeight: {
           type: Number,
           value: 0,
           notify: true
         },
-        minWidth:{
+        minWidth: {
           type: Number,
           value: 0,
           notify: true
         },
-        maxWidth:{
+        maxWidth: {
           type: Number,
           value: 0,
           notify: true
         },
-        errorOnlyOneFile:{
+        errorOnlyOneFile: {
           type: String,
           notify: true,
-          value:"Only one file accepted"
+          value: "Only one file accepted"
         },
-        errorBrowserNotSupported:{
+        errorBrowserNotSupported: {
           type: String,
           notify: true,
-          value:"Browser not supported"
+          value: "Browser not supported"
         },
-        errorTypeNotSupported:{
+        errorTypeNotSupported: {
           type: String,
           notify: true,
-          value:"Supported type: png,jpeg,bmp."
+          value: "Supported type: png,jpeg,bmp."
         },
-        errorWidth:{
+        errorWidth: {
           type: String,
           notify: true,
-          value:"The image width must be between: "
+          value: "The image width must be between: "
         },
-        errorHeight:{
+        errorHeight: {
           type: String,
           notify: true,
-          value:"The image height must be between: "
+          value: "The image height must be between: "
         }
       },
       error: function(text) {
@@ -215,7 +185,7 @@
       browserNotSupported: function() {
         this.error(this.errorBrowserNotSupported);
       },
-      imageMetadataLoad: function(e,obj) {
+      imageMetadataLoad: function(e, obj) {
         var width = obj.width;
         var height = obj.height;
         if (
@@ -233,13 +203,13 @@
           return;
         }
         this.tempSelectedImage = this.imageMD;
-        this.tempSelImgWidth  = width;
+        this.tempSelImgWidth = width;
         this.tempSelImgHeight = height;
         this.cropImage = this.imageMD;
         this.$.dropZone.close();
         this.$.newImage.open();
       },
-      fileSelected: function(e,obj) {
+      fileSelected: function(e, obj) {
         // check file.name, size, type, result
         if (
           this.checkType(obj.type) == false
@@ -269,16 +239,16 @@
       getAllowedTypes: function() {
         return ["image/bmp", "image/jpeg", "image/png", "image/pjpeg"];
       },
-      SaveNewImage: function(e,image) {
+      SaveNewImage: function(e, image) {
         /**
-        * Finally save the original and the cropped image.
-        * ( No need to save size for cropped )
-        */
-        this.originalImage        = this.tempSelectedImage;
-        this.croppedImage         = image.data;
-        this.originalImageWidth   = this.tempSelImgWidth;
-        this.originalImageHeight  = this.tempSelImgHeight;
-        this.selectedImage        = true;
+         * Finally save the original and the cropped image.
+         * ( No need to save size for cropped )
+         */
+        this.originalImage = this.tempSelectedImage;
+        this.croppedImage = image.data;
+        this.originalImageWidth = this.tempSelImgWidth;
+        this.originalImageHeight = this.tempSelImgHeight;
+        this.selectedImage = true;
         //this.$.paperBox.changeBackground(this.croppedImage);
       },
       ExitNewImage: function() {
@@ -300,15 +270,15 @@
         this.$.modImage.close();
         this.$.newImage.open();
       },
-      _onOpen: function(newvalue,oldvalue) {
-        if (newvalue == true){
-          if (this.selectedImage == false){
-            this.$.dropZone.open();
-          }else{
-            this.previewImage = this.croppedImage;
-            this.$.modImage.open();
-          }
+      open: function() {
+
+        if (this.selectedImage == false) {
+          this.$.dropZone.open();
+        } else {
+          this.previewImage = this.croppedImage;
+          this.$.modImage.open();
         }
+
       },
 
 
