@@ -234,7 +234,9 @@
               canvas.width = width * ratio;
               canvas.height = height * ratio;
               var ctx = canvas.getContext("2d");
-              ctx.drawImage(this.imageMD, 0, 0, width * ratio, height * ratio);
+              var bigImage = new Image(width, height);
+              bigImage.src = this.imageMD;
+              ctx.drawImage(bigImage, 0, 0, width * ratio, height * ratio);
               var image = canvas.toDataURL("image/png");
               this.tempSelectedImage = image;
               this.tempSelImgWidth = width * ratio;
