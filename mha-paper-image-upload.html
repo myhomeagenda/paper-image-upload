@@ -29,7 +29,7 @@
     <mha-paper-alert id="image_alert">
     </mha-paper-alert>
 
-    <paper-dropzone-dialog id="dropZone" text="{{dropzoneText}}" on-files-error="fileError" on-file-selected="fileSelected" on-browser-error="browserNotSupported">
+    <paper-dropzone-dialog auto-resize id="dropZone" text="{{dropzoneText}}" on-files-error="fileError" on-file-selected="fileSelected" on-browser-error="browserNotSupported">
     </paper-dropzone-dialog>
 
     <mha-paper-cropper-dialog id="newImage" save-text="{{newImageSaveText}}" exit-text="{{newImageExitText}}" on-save="SaveNewImage" on-back="ExitNewImage" crop-src="{{cropImage}}" crop-width="{{croppedImageWidth}}" crop-height="{{croppedImageHeight}}">
@@ -51,11 +51,11 @@
 
 
       properties: {
-        /*_selected: {
+         autoResize: {
           type: Boolean,
           value: false,
           notify: true
-        },*/
+        },
         newImageSaveText: {
           type: String,
           value: "Save",
@@ -188,24 +188,64 @@
       imageMetadataLoad: function(e, obj) {
         var width = obj.width;
         var height = obj.height;
-        if (
-          (this.minWidth != 0 && width < this.minWidth) ||
-          (this.maxWidth != 0 && width > this.maxWidth)
-        ) {
-          this.error(this.errorWidth + this.minWidth + " px / " + this.maxWidth + " px");
-          return;
+        var image = this.imageMD;
+        if (this.autoResize == false) {
+          if (
+            (this.minWidth != 0 && width < this.minWidth) ||
+            (this.maxWidth != 0 && width > this.maxWidth)
+          ) {
+            this.error(this.errorWidth + this.minWidth + " px / " + this.maxWidth + " px");
+            return;
+          }
+
+          if (
+            (this.minHeight != 0 && height < this.minHeight) ||
+            (this.maxHeight != 0 && height > this.maxHeight)
+          ) {
+            this.error(this.errorHeight + this.minHeight + " px / " + this.maxHeight + " px");
+            return;
+          }
+          this.tempSelectedImage = this.imageMD;
+          this.tempSelImgWidth = width;
+          this.tempSelImgHeight = height;
+          this.cropImage = this.imageMD;
+
+        } else{
+          // Check minimum.
+          if (this.minWidth != 0 && width < this.minWidth){
+            this.error(this.errorWidth + this.minWidth + " px ");
+            return;
+          }
+          if (this.minHeight != 0 && height < this.minHeight){
+            this.error(this.errorHeight + this.minHeight + " px ");
+            return;
+          }
+          // Check maximum.
+          // If is greater of Max Height or Max Width, then autoresize.
+          if (
+              (this.maxWidth != 0 && width > this.maxWidth) ||
+              (this.maxHeight != 0 && height > this.maxHeight)
+            ){
+              // resize.
+              var ratioW = this.maxWidth / width;
+              var ratioH = this.maxHeight / height;
+              var ratio  = (ratioW > ratioH)?ratioW:ratioH;
+              var canvas = document.createElement("canvas");
+              canvas.width = width * ratio;
+              canvas.height = height * ratio;
+              var ctx = canvas.getContext("2d");
+              ctx.drawImage(img, 0, 0, width * ratio, height * ratio);
+              var image = canvas.toDataURL("image/png");
+              this.tempSelectedImage = image;
+              this.tempSelImgWidth = width * ratio;
+              this.tempSelImgHeight = height * ratio;
+              this.cropImage = image;
+          }
+
+
         }
-        if (
-          (this.minHeight != 0 && height < this.minHeight) ||
-          (this.maxHeight != 0 && height > this.maxHeight)
-        ) {
-          this.error(this.errorHeight + this.minHeight + " px / " + this.maxHeight + " px");
-          return;
-        }
-        this.tempSelectedImage = this.imageMD;
-        this.tempSelImgWidth = width;
-        this.tempSelImgHeight = height;
-        this.cropImage = this.imageMD;
+
+
         this.$.dropZone.close();
         this.$.newImage.open();
       },
