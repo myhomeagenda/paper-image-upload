@@ -239,8 +239,8 @@
               ctx.drawImage(bigImage, 0, 0, width * ratio, height * ratio);
               var image = canvas.toDataURL("image/png");
               this.tempSelectedImage = image;
-              this.tempSelImgWidth = width * ratio;
-              this.tempSelImgHeight = height * ratio;
+              this.tempSelImgWidth = Math.round(width * ratio);
+              this.tempSelImgHeight = Math.round(height * ratio);
               this.cropImage = image;
           }else{
             this.tempSelectedImage = this.imageMD;
