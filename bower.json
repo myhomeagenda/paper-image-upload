@@ -11,7 +11,7 @@
     "iron-icon": "PolymerElements/iron-icon",
     "iron-flex-layout": "PolymerElements/iron-flex-layout",
     "paper-dropzone-dialog": "https://github.com/faan11/paper-dropzone-dialog.git",
-    "paper-cropper-dialog": "https://github.com/faan11/paper-cropper-dialog.git",
+    "mha-paper-cropper-dialog": "https://github.com/myhomeagenda/mha-paper-cropper-dialog.git",
     "mha-paper-alert": "https://github.com/faan11/mha-paper-alert.git",
     "iron-image-metadata": "https://github.com/faan11/iron-image-metadata.git"
   },
