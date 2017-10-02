@@ -1,14 +1,14 @@
 
-# paper-image-upload
+# mha-paper-image-upload
 
-Material design: paper-image-upload
+Material design: mha-paper-image-upload
 
-`<paper-image-upload>` is a material design box that select an image, to filter it and to crop it.
+`<mha-paper-image-upload>` is a material design box that select an image, to filter it and to crop it.
 
 # Example:
 
 ```html
-<paper-image-upload
+<mha-paper-image-upload
             box-icon="images/add_blue.svg"
             box-text="Profile"
             box-text-modify= "Change"

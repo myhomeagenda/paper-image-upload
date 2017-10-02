@@ -1,6 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../paper-dropzone-dialog/paper-dropzone-dialog.html">
-<link rel="import" href="../paper-cropper-dialog/paper-cropper-dialog.html">
+<link rel="import" href="../mha-paper-cropper-dialog/mha-paper-cropper-dialog.html">
 <link rel="import" href="../mha-paper-alert/mha-paper-alert.html">
 <link rel="import" href="../iron-image-metadata/iron-image-metadata.html">
 
@@ -13,7 +13,7 @@
 -->
 
 
-<dom-module id="paper-image-upload">
+<dom-module id="mha-paper-image-upload">
   <template>
     <custom-style>
     </custom-style>
@@ -21,8 +21,8 @@
       :host {}
 
       paper-dropzone-dialog {
-        --paper-dropzone-dialog-color: var(--paper-image-upload-dropzone-color);
-        --paper-dropzone-dialog-text-color: var(--paper-image-upload-dropzone-text-color);
+        --paper-dropzone-dialog-color: var(--mha-paper-image-upload-dropzone-color);
+        --paper-dropzone-dialog-text-color: var(--mha-paper-image-upload-dropzone-text-color);
       }
     </style>
 
@@ -32,11 +32,11 @@
     <paper-dropzone-dialog id="dropZone" text="{{dropzoneText}}" on-files-error="fileError" on-file-selected="fileSelected" on-browser-error="browserNotSupported">
     </paper-dropzone-dialog>
 
-    <paper-cropper-dialog id="newImage" save-text="{{newImageSaveText}}" exit-text="{{newImageExitText}}" on-save="SaveNewImage" on-back="ExitNewImage" crop-src="{{cropImage}}" crop-width="{{croppedImageWidth}}" crop-height="{{croppedImageHeight}}">
-    </paper-cropper-dialog>
+    <mha-paper-cropper-dialog id="newImage" save-text="{{newImageSaveText}}" exit-text="{{newImageExitText}}" on-save="SaveNewImage" on-back="ExitNewImage" crop-src="{{cropImage}}" crop-width="{{croppedImageWidth}}" crop-height="{{croppedImageHeight}}">
+    </mha-paper-cropper-dialog>
 
-    <paper-cropper-dialog id="modImage" save-text="{{modImageChangeText}}" exit-text="{{modImageNewText}}" on-save="ChangeImage" on-back="LoadNewImage" preview-only preview-src="{{previewImage}}">
-    </paper-cropper-dialog>
+    <mha-paper-cropper-dialog id="modImage" save-text="{{modImageChangeText}}" exit-text="{{modImageNewText}}" on-save="ChangeImage" on-back="LoadNewImage" preview-only preview-src="{{previewImage}}">
+    </mha-paper-cropper-dialog>
 
     <iron-image-metadata id="metadataImage" src="{{imageMD}}" width="{{imageW}}" height="{{imageH}}" on-load="imageMetadataLoad">
     </iron-image-metadata>
@@ -47,7 +47,7 @@
   <script>
     Polymer({
 
-      is: 'paper-image-upload',
+      is: 'mha-paper-image-upload',
 
 
       properties: {
