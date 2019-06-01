@@ -295,6 +295,7 @@
         this.originalImageWidth = this.tempSelImgWidth;
         this.originalImageHeight = this.tempSelImgHeight;
         this.selectedImage = true;
+        this.fire("select-image");
         //this.$.paperBox.changeBackground(this.croppedImage);
       },
       ExitNewImage: function() {
