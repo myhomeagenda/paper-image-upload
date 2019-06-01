@@ -118,7 +118,7 @@
         selectedImage: {
           type: Boolean,
           value: false,
-          notify: true
+          computed: "_isSelected(originalImage,croppedImage)"
         },
         minHeight: {
           type: Number,
@@ -185,6 +185,9 @@
       browserNotSupported: function() {
         this.error(this.errorBrowserNotSupported);
       },
+      _isSelected: function (originalImage,croppedImage) {
+        return (originalName !=="" && croppedImage !=="" );
+      }
       imageMetadataLoad: function(e, obj) {
         var width = obj.width;
         var height = obj.height;
@@ -294,7 +297,7 @@
         this.croppedImage = image.data;
         this.originalImageWidth = this.tempSelImgWidth;
         this.originalImageHeight = this.tempSelImgHeight;
-        this.selectedImage = true;
+        //this.selectedImage = true;
         this.fire("select-image");
         //this.$.paperBox.changeBackground(this.croppedImage);
       },
