@@ -117,6 +117,7 @@
         },
         selectedImage: {
           type: Boolean,
+          notify:true,
           value: false,
           computed: "_isSelected(originalImage,croppedImage)"
         },
@@ -298,8 +299,7 @@
           originalImage:this.tempSelectedImage,
           croppedImage:image.data,
           originalImageWidth:this.tempSelImgWidth,
-          originalImageHeight:this.tempSelImgHeight,
-          selectedImage: true
+          originalImageHeight:this.tempSelImgHeight
         });
         this.fire("select-image");
         //this.$.paperBox.changeBackground(this.croppedImage);
