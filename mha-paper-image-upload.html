@@ -294,11 +294,13 @@
          * Finally save the original and the cropped image.
          * ( No need to save size for cropped )
          */
-        this.originalImage = this.tempSelectedImage;
-        this.croppedImage = image.data;
-        this.originalImageWidth = this.tempSelImgWidth;
-        this.originalImageHeight = this.tempSelImgHeight;
-        this.selectedImage = true;
+        this.setProperties({
+          originalImage:this.tempSelectedImage.
+          croppedImage:image.data,
+          originalImageWidth:this.tempSelImgWidth,
+          originalImageHeight:this.tempSelImgHeight,
+          selectedImage: true
+        });
         this.fire("select-image");
         //this.$.paperBox.changeBackground(this.croppedImage);
       },
